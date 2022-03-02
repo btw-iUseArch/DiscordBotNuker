@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import os
 
 client = commands.Bot(command_prefix="?")
 client.remove_command("help")
@@ -53,4 +54,4 @@ async def nuke(ctx, channel: discord.TextChannel=None):
 async def nuke_error(ctx, error):
     await ctx.send(":negative_squared_cross_mark: You don't have permission to do that!")
 
-client.run("OTQ4MjcwNDY1NjcwMDUzOTk5.Yh5XsQ.9r7L083Tsfg7r39_S26o_RW6FvU")
+client.run(os.getenv("DISCORD_TOKEN"))
