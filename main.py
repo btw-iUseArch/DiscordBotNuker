@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import os
+import asyncio
 
 client = commands.Bot(command_prefix="?")
 client.remove_command("help")
@@ -22,36 +23,39 @@ async def help(ctx):
 @client.command()
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount=20):
-    try:
-        await ctx.channel.purge(limit=amount+1)
-        if amount == 1:
-            await ctx.send(f"Deleted 1 message :+1:")
-        else:
-            await ctx.send(f"Deleted {amount} messages :+1:")
-    except:
-        print("aa")
+    await ctx.channel.purge(limit=amount+1)
+    if amount == 1:
+        message1 = await ctx.send(f"Deleted 1 message :+1:")
+        await asyncio.sleep(5)
+    await message1.delete()
+    else:
+        message2 = await ctx.send(f"Deleted {amount} messages :+1:")
+        await asyncio.sleep(5)
+        await message2.delete()
 
 @clear.error
 async def clear_error(ctx, error):
-    await ctx.send(":negative_squared_cross_mark: You don't have permission to do that!")
+    message = await ctx.send(":negative_squared_cross_mark: You don't have permission to do that!")
+    await asyncio.sleep(5)
+    await message.delete()
 
 
 @client.command()
 @commands.has_permissions(manage_messages=True)
 async def nuke(ctx, channel: discord.TextChannel=None):
-    try:
-        channel = channel or ctx.channel
-        count = 0
-        async for _ in channel.history(limit=None):
-            count += 1
-        await ctx.channel.purge(limit=count)
-        await ctx.send(f"Nuked {channel.mention}")
-    except Exception as e:
-        print(e)
-        await ctx.send("You don't have permission!")
+    channel = channel or ctx.channel
+    count = 0
+    async for _ in channel.history(limit=None):
+        count += 1
+    await ctx.channel.purge(limit=count)
+    message = await ctx.send(f"Nuked {channel.mention}")
+    await asyncio.sleep(5)
+    await message.delete()
 
 @nuke.error
 async def nuke_error(ctx, error):
-    await ctx.send(":negative_squared_cross_mark: You don't have permission to do that!")
+    message = await ctx.send(":negative_squared_cross_mark: You don't have permission to do that!")
+    await asyncio.sleep(5)
+    await message.delete()
 
 client.run(os.getenv("DISCORD_TOKEN"))
