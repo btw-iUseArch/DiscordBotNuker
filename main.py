@@ -27,7 +27,7 @@ async def clear(ctx, amount=20):
     if amount == 1:
         message1 = await ctx.send(f"Deleted 1 message :+1:")
         await asyncio.sleep(5)
-    await message1.delete()
+        await message1.delete()
     else:
         message2 = await ctx.send(f"Deleted {amount} messages :+1:")
         await asyncio.sleep(5)
