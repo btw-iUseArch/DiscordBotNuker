@@ -27,10 +27,4 @@ async def stop(ctx):
     global loop
     loop = False
 
-@client.command()
-async def delete(ctx):
-    for c in ctx.guild.channels:
-        await c.delete()
-
-
 client.run(os.getenv("DISCORD_TOKEN"))
